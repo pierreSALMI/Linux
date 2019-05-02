@@ -1,5 +1,5 @@
 # Linux
-##Le jeux du plus ou moins
+## Le jeux du plus ou moins
 ```
 #!/bin/bash
 
@@ -24,7 +24,7 @@ while [ $a != $random ]; do
 
 ```
 
-##Un outils de sauvegarde
+## Un outils de sauvegarde
 ```
 #!/bin/bash
 
@@ -38,7 +38,7 @@ then
 fi
 ```
 
-##youtube-dl
+## youtube-dl
 ```
 #!/bin/bash
 
