@@ -1,5 +1,7 @@
 # Linux
 ## Le jeux du plus ou moins
+Le but du script est de jouer au jeux du plus ou moins. On sauvegarde un chiffre random entre 0 et 1000. Il faut retrouver le chiffre random pour pouvoir finir le jeux.
+Je n'ais pas eu de probleme pour ce script
 ```
 #!/bin/bash
 
@@ -21,10 +23,11 @@ while [ $a != $random ]; do
                         echo "c +"
                 elif [ $a -gt $random ]
                 then
-
 ```
 
 ## Un outils de sauvegarde
+Le but du script est de sauvegarder un dossier défini quand on est vendredi.
+Je n'ais pas réussi à faire la sauvegarde partielle pour ce script et ne possede plus ma version d'essaie.
 ```
 #!/bin/bash
 
@@ -39,6 +42,8 @@ fi
 ```
 
 ## youtube-dl
+Le but du script est de télécharger l'audio d'une vidéo youtube dans le dossier musique crée auparavant.
+Je n'ais pas eu de probleme pour ce script
 ```
 #!/bin/bash
 
