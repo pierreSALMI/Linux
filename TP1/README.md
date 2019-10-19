@@ -27,7 +27,7 @@ On créé l'utilisateur wiki et lui affectons les droits requis pour Dokuwiki
 Restart
 `systemctl restart apache2`
 
-## Installation Rsync
+## Installation Rsync + Crontab
 
 Telechargement
 `apt-get install rsync`
