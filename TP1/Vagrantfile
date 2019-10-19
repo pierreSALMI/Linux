@@ -1,0 +1,52 @@
+
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure("2") do |config|
+  config.vm.box = "debian/stretch64"
+  config.vm.box_check_update = false  
+
+  
+config.vm.provision "init", type:"shell", inline: <<-SHELL
+  apt-get update -qq  
+  apt-get -y -qq install apache2
+  apt-get install libapache2-mod-php7.0
+  apt-get install php7.0-mbstring
+  useradd -m -G www-data wiki
+  mkdir /opt/src
+  wget -q -O /opt/src/dokuwiki-stable.tgz https://download.dokuwiki.org/src/dokuwiki/dokuwiki-stable.tgz
+  tar zxf /opt/src/dokuwiki-stable.tgz -C /var/www/html
+  mv /var/www/html/dokuwiki-2018-04-22b /var/www/html/dokuwiki
+  chown -R wiki:www-data /var/www/html/dokuwiki/
+  chmod -R g+w /var/www/html/dokuwiki
+  rm /var/www/html/dokuwiki/install.php
+  systemctl restart apache2
+  systemctl reload apache2
+
+  mkdir /home/wiki/.ssh
+  chmod 700 /home/wiki/.ssh
+  
+  cp /vagrant/id_rsa_wiki /home/wiki/.ssh
+  cat /vagrant/id_rsa_wiki.pub > /home/wiki/.ssh/authorized_keys
+
+  ssh-keyscan 192.168.56.11 >> /home/wiki/.ssh/authorized_keys
+  ssh-keyscan 192.168.56.12 >> /home/wiki/.ssh/authorized_keys
+  
+  chown -R wiki:wiki /home/wiki/.ssh
+  chmod 600 /home/wiki/.ssh/*
+  
+  SHELL
+
+  config.vm.define "wiki" do |wik|
+    wik.vm.hostname = "wiki"
+    wik.vm.network "private_network", ip: "192.168.56.11"
+  end
+  config.vm.define "backup" do |back|
+    back.vm.hostname = "backup"
+    back.vm.network "private_network", ip: "192.168.56.12"
+    back.vm.provision "cron", type: "shell", run: "once", inline: <<-EOF
+          echo should do rsync cron
+          echo '*/5 * * * * rsync -ap --chown=wiki:www-data --chmod-ug+w -e "ssh -o StrictHostKayChacking=no" wiki@192.168.56.12:/var/www/html/dokuwiki /var/www/html/dokuwiki/' | sudo -u wiki crontab
+        EOF
+  end
+end
