@@ -32,9 +32,11 @@ wiki.lab.local.         3600    IN      A       192.168.56.11
 l'adresse ip de wiki.lab.local est 192.168.56.11
 
 * Connectez vous au host auth-1, quels sont les services réseaux qui sont en fonctionnement actuellement quels sont leur socket d'écoute ?
+
 Les services réseaux qui fonctionnent sont http, mysql[3306] et pdns
 
 * Connectez vous au host recursor-1,  quels sont les services réseaux qui sont en fonctionnement actuellement quels sont leur socket d'écoute ?
+
 Le service réseaux qui fonctionent sont pdns 
 
 * Où sont configuré chacuns de ces composants ?
@@ -46,12 +48,14 @@ Le service réseaux qui fonctionent sont pdns
 ```
 
 * Qu'est ce qui est configuré sur les serveurs recursifs pour le domaine lab.local ? (Important pour les Actions qui suivent)
+
 Un forward vers les serveurs authoritatifs est configuré pour lab.local sur les serveurs recursif
 ```
 '147aforward-zones=lab.local=192.168.56.31;192.168.56.32'
 ```
 
 * Comment mettre en évidence le fait que le récurseurs ne répondent que sur l’interface du réseaux back (192.168.33.0/24) 
+
 En faisant la commande `dig wiki.lab.local @192.168.56.21` `dig wiki.lab.local @192.168.56.21`
 ou en regardant l'interface d'écoute avec la commande `ss -4l` 
 ` tcp   LISTEN     0      128                                                                       192.168.33.21:domain                                                                                              *:*     `
