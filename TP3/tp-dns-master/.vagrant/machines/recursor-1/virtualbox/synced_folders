@@ -1,0 +1,1 @@
+{"rsync":{"/vagrant":{"type":"rsync","guestpath":"/vagrant","hostpath":"C:/Users/pierr/OneDrive/Documents/GitHub/Linux/TP3/tp-dns-master","disabled":false,"__vagrantfile":true,"owner":"vagrant","group":"vagrant"}}}
