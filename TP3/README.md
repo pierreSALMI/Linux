@@ -61,3 +61,39 @@ ou en regardant l'interface d'écoute avec la commande `ss -4l`
 ` tcp   LISTEN     0      128                                                                       192.168.33.21:domain                                                                                              *:*     `
 
 * Comment est sécurisé l’accès à mysql ?
+
+L'accés à mysql est sécurisé en suppriment la table PDNS et en creant une nouvelle table avec des accés redéfinie
+
+## Actions
+
+* Ajoutez un nouveau domaine "preprod.local" sur les serveurs autoritatifs interrogeable au travers des serveurs recursifs, décrivez vos actions.
+
+Nous ajouterons le nouveau domaine en accedant d'abord à Poweradmin du serveur `auth-1` puis add master zone
+
+![add zone](images/add-zone.PNG)
+
+* Mettez en place une config reverse-proxy pour les interfaces poweradmin. Vous préciserez vos actions et dans la configuration reverse proxy le socket d'écoute, le serveur name et la route web configuré.
+
+On modifie le fichier de `nginx`
+
+``` 
+  upstream big_server_com { 
+      server 10.101.33.31:80/poweradmin; 
+      server 10.101.33.32:80/poweradmin;   
+    }
+
+  server {
+      listen          80;
+      server_name     poweradmin.com;
+      access_log      logs/power.admin.access.log main;
+
+      location / {
+      proxy_pass      http://big_server_com;
+      }
+  }
+
+```
+
+* Mettez en place une sauvegarde des données dns.
+
+Comme pour le TP1 on modifie la crontab pour sauvegarder les fichiers DNS toutes les 5min
